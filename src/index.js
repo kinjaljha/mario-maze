@@ -38,7 +38,6 @@ const Maze = () => {
 
   return (
     <div className="maze">
-      {/* check this class below */}
         <div className="game-board"> 
           <Board width={width.inputData} height={height.inputData} />
         </div>

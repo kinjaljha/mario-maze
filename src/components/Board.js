@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Box from './Box';
 import { SPRITE, MARIO , validateRange } from '../utility';
 
-const Board = (props) => {
-  const [totalBox, setTotalBox] = useState(props.width * props.height);
+const Board = ({width, height}) => {
+  const [totalBox, setTotalBox] = useState(width * height);
   const [boxes, setBoxes] = useState([]);
   const [marioLocation, setMarioLocation] = useState(Math.floor(Math.random() * (totalBox - 0) + 0));
   const [gameStartedFlag, setGameStartedFlag] = useState(false);
@@ -25,8 +25,8 @@ const Board = (props) => {
       let boxCount = 0;
       let box = JSON.parse(JSON.stringify(boxes));
 
-      for (let i = 0; i < props.height; i++) {
-        for (let j = 0; j < props.width; j++) {
+      for (let i = 0; i < height; i++) {
+        for (let j = 0; j < width; j++) {
           let element = boxCount === marioLocation ? MARIO : spriteBoxes.includes(boxCount) ? SPRITE : '';
           let display = spriteBoxes.includes(boxCount) || boxCount === marioLocation ? 'block' : 'none';
           box.push({ element, display, value: boxCount });
@@ -47,18 +47,18 @@ const Board = (props) => {
 
   const getMarioRow = () => {
     let marioRow = [];
-    for (let i = 0; i < props.height; i++) {
-      if (marioLocation >= (i * props.width) && marioLocation < (i * props.width) + props.width) {
-        marioRow = [i * props.width, i * props.width + props.width];
+    for (let i = 0; i < height; i++) {
+      if (marioLocation >= (i * width) && marioLocation < (i * width) + width) {
+        marioRow = [i * width, i * width + width];
       }
     }
     return marioRow;
   };
 
   const moveY = (move) => {
-    if (move === '+' && marioLocation + 1 - props.height > 0) {
+    if (move === '+' && marioLocation + 1 - height > 0) {
       let localBoxes = JSON.parse(JSON.stringify(boxes));
-      let newMarioLocation = marioLocation - props.height;
+      let newMarioLocation = marioLocation - height;
       localBoxes[marioLocation] = { element: '', display: 'none', value: marioLocation };
       localBoxes[newMarioLocation] = { element: MARIO, display: 'block', value: newMarioLocation };
 
@@ -69,10 +69,10 @@ const Board = (props) => {
       setYMoves(yMoves + 1);
       setXMoves(0);
       setLastMove('+y');
-    } else if (move === '-' && (marioLocation + props.height) < totalBox) {
+    } else if (move === '-' && (marioLocation + height) < totalBox) {
       let localBoxes = JSON.parse(JSON.stringify(boxes));
 
-      let newMarioLocation = marioLocation + props.height;
+      let newMarioLocation = marioLocation + height;
       localBoxes[marioLocation] = { element: '', display: 'none', value: marioLocation };
       localBoxes[newMarioLocation] = { element: MARIO, display: 'block', value: newMarioLocation };
 
@@ -89,7 +89,7 @@ const Board = (props) => {
   };
 
   const moveX = (move) => {
-    if (move === '+' && (marioLocation + 2) % props.width !== 1 && (marioLocation + 1) < totalBox) {
+    if (move === '+' && (marioLocation + 2) % width !== 1 && (marioLocation + 1) < totalBox) {
       let localBoxes = JSON.parse(JSON.stringify(boxes));
 
       let newMarioLocation = marioLocation + 1;
@@ -103,7 +103,7 @@ const Board = (props) => {
       setXMoves(xMoves + 1);
       setYMoves(0);
       setLastMove('+x');
-    } else if (move === '-' && (marioLocation % props.width) !== 0 && (marioLocation - 1) >= 0) {
+    } else if (move === '-' && (marioLocation % width) !== 0 && (marioLocation - 1) >= 0) {
       let localBoxes = JSON.parse(JSON.stringify(boxes));
 
       let newMarioLocation = marioLocation - 1;
@@ -127,11 +127,11 @@ const Board = (props) => {
     let distance = Math.abs(spriteLocation - marioLocation);
     let marioRow = getMarioRow();
 
-    if ((distance < props.width) && (spriteLocation < marioLocation) && validateRange(spriteLocation, marioRow)) moveX('-');
-    else if ((distance < props.width) && (spriteLocation < marioLocation) && !validateRange(spriteLocation, marioRow)) moveY('+');
-    else if ((distance < props.width) && (spriteLocation > marioLocation) && validateRange(spriteLocation, marioRow)) moveX('+');
-    else if ((distance < props.width) && (spriteLocation < marioLocation) && !validateRange(spriteLocation, marioRow)) moveY('-');
-    else if ((distance >= props.width) && (spriteLocation < marioLocation)) moveY('+');
+    if ((distance < width) && (spriteLocation < marioLocation) && validateRange(spriteLocation, marioRow)) moveX('-');
+    else if ((distance < width) && (spriteLocation < marioLocation) && !validateRange(spriteLocation, marioRow)) moveY('+');
+    else if ((distance < width) && (spriteLocation > marioLocation) && validateRange(spriteLocation, marioRow)) moveX('+');
+    else if ((distance < width) && (spriteLocation < marioLocation) && !validateRange(spriteLocation, marioRow)) moveY('-');
+    else if ((distance >= width) && (spriteLocation < marioLocation)) moveY('+');
     else moveY('-');
   };
 
@@ -163,8 +163,8 @@ const Board = (props) => {
   const makeBoard = () => {
     let board = [];
     let rows = [];
-    for (let i = 0, boxCount = 0; i < props.height; i++) {
-      for (let j = 0; j < props.width; j++) {
+    for (let i = 0, boxCount = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
         rows.push(makeBox(boxCount));
         boxCount++;
       }

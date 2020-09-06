@@ -1,0 +1,29 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 40px;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.box {
+  background: #fff;
+  border: 1px solid black;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 36px;
+  margin-right: -2px;
+  margin-top: -2px;
+  padding: 0;
+  text-align: center;
+  width: 36px;
+}
+
+.box:focus {
+  outline: none;
+}
